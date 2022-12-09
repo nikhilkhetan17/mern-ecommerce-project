@@ -4,11 +4,11 @@ import asyncHandler from "../services/asyncHandler";
 import CustomError from "../utils/customError";
 import config from "../config/index";
 
-export const isLoggedIn = asyncHandler(async (req, res, next) => {
+export const isLoggedIn = asyncHandler(async (req, _res, next) => {
   let token;
 
   if (
-    res.cookies.token ||
+    req.cookies.token ||
     (req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer"))
   ) {
