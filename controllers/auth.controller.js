@@ -116,6 +116,9 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   // check email for null
+  if (!email) {
+    throw new CustomError("Invalid email", 404);
+  }
 
   if (!user) {
     throw new CustomError("User not found", 404);
@@ -128,7 +131,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     "host"
   )}/api/auth/password/reset/${resetToken}`;
 
-  const text = `Ypur password reset link is 
+  const text = `Your password reset link is 
   \n\n ${resetUrl}\n\n`;
 
   try {
@@ -143,7 +146,6 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     });
   } catch (err) {
     // roll back - clear fields and save
-
     user.forgotPasswordToken = undefined;
     user.forgotPasswordExpiry = undefined;
 
